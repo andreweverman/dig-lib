@@ -76,7 +76,6 @@ pub struct User {
     pub photo: Option<String>,
     pub access_token: Option<String>,
     pub refresh_token: Option<String>,
-    pub service_list: Option<Vec<Services>>,
     pub services: Option<HashMap<Services, ServiceEnum>>,
 }
 
