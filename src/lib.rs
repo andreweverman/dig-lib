@@ -76,8 +76,8 @@ pub struct User {
     pub photo: Option<String>,
     pub access_token: Option<String>,
     pub refresh_token: Option<String>,
-    pub service_list: Vec<Services>,
-    pub services: HashMap<Services, ServiceEnum>,
+    pub service_list: Option<Vec<Services>>,
+    pub services: Option<HashMap<Services, ServiceEnum>>,
 }
 
 impl User {
@@ -85,7 +85,7 @@ impl User {
     where
         T: From<Dig> + From<Dug> + From<Catalog> + From<AlbumSaveTracks>,
     {
-        self.services.get(&service).map(|s| match s {
+        self.services.as_ref().and_then(|services| services.get(&service)).map(|s| match s {
             ServiceEnum::Dig(d) => d.clone().into(),
             ServiceEnum::Dug(d) => d.clone().into(),
             ServiceEnum::Catalog(d) => d.clone().into(),
