@@ -85,20 +85,42 @@ impl User {
     where
         T: From<Dig> + From<Dug> + From<Catalog> + From<AlbumSaveTracks>,
     {
-        self.services.as_ref().and_then(|services| services.get(&service)).map(|s| match s {
-            ServiceEnum::Dig(d) => d.clone().into(),
-            ServiceEnum::Dug(d) => d.clone().into(),
-            ServiceEnum::Catalog(d) => d.clone().into(),
-            ServiceEnum::AlbumSaveTracks(d) => d.clone().into(),
-        })
+        self.services
+            .as_ref()
+            .and_then(|services| services.get(&service))
+            .map(|s| match s {
+                ServiceEnum::Dig(d) => d.clone().into(),
+                ServiceEnum::Dug(d) => d.clone().into(),
+                ServiceEnum::Catalog(d) => d.clone().into(),
+                ServiceEnum::AlbumSaveTracks(d) => d.clone().into(),
+            })
     }
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
-pub struct RedisUser{
+pub struct RedisUser {
     pub id: String,
     pub user_id: String,
     pub access_token: String,
     pub refresh_token: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct RedisMessage {
+    pub id: String,
+    pub timestamp: DateTime,
+    pub user: RedisUser,
+    pub service: Services,
+}
+
+impl RedisMessage {
+    pub fn new(id: String, timestamp: DateTime, user: RedisUser, service: Services) -> Self {
+        Self {
+            id,
+            timestamp,
+            user,
+            service,
+        }
+    }
 }
