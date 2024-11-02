@@ -94,6 +94,8 @@ impl User {
     }
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct RedisUser{
     pub id: String,
     pub user_id: String,
