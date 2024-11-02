@@ -93,3 +93,10 @@ impl User {
         })
     }
 }
+
+pub struct RedisUser{
+    pub id: String,
+    pub user_id: String,
+    pub access_token: String,
+    pub refresh_token: String,
+}
