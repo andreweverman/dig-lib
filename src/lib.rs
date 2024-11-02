@@ -80,65 +80,7 @@ pub struct User {
     pub services: Option<HashMap<Services, ServiceEnum>>,
 }
 
-impl TryFrom<ServiceEnum> for Dig {
-    type Error = Box<dyn Error>;
 
-    fn try_from(value: ServiceEnum) -> Result<Self, Self::Error> {
-        if let ServiceEnum::Dig(dig) = value {
-            Ok(dig)
-        } else {
-            Err("Failed to convert ServiceEnum to Dig".into())
-        }
-    }
-}
-
-impl TryFrom<ServiceEnum> for Dug {
-    type Error = Box<dyn Error>;
-
-    fn try_from(value: ServiceEnum) -> Result<Self, Self::Error> {
-        if let ServiceEnum::Dug(dug) = value {
-            Ok(dug)
-        } else {
-            Err("Failed to convert ServiceEnum to Dug".into())
-        }
-    }
-}
-
-impl TryFrom<ServiceEnum> for Catalog {
-    type Error = Box<dyn Error>;
-
-    fn try_from(value: ServiceEnum) -> Result<Self, Self::Error> {
-        if let ServiceEnum::Catalog(catalog) = value {
-            Ok(catalog)
-        } else {
-            Err("Failed to convert ServiceEnum to Catalog".into())
-        }
-    }
-}
-
-impl TryFrom<ServiceEnum> for AlbumSaveTracks {
-    type Error = Box<dyn Error>;
-
-    fn try_from(value: ServiceEnum) -> Result<Self, Self::Error> {
-        if let ServiceEnum::AlbumSaveTracks(album_save_tracks) = value {
-            Ok(album_save_tracks)
-        } else {
-            Err("Failed to convert ServiceEnum to AlbumSaveTracks".into())
-        }
-    }
-}
-
-impl User {
-    pub fn get_service<T>(&self, service: Services) -> Option<T>
-    where
-        T: Service + TryFrom<ServiceEnum, Error = Box<dyn Error>>,
-    {
-        self.services
-            .as_ref()
-            .and_then(|services| services.get(&service))
-            .and_then(|s| T::try_from(s.clone()).ok())
-    }
-}
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct RedisUser {
@@ -166,4 +108,3 @@ impl RedisMessage {
         }
     }
 }
-
