@@ -37,24 +37,16 @@ pub struct AlbumSaveTracks {
     pub last_run: DateTime,
 }
 
-#[derive(Debug, Display, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
+#[derive(EnumString, Debug, Display, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 pub enum Services {
-    Dig,
-    Dug,
-    Catalog,
-    AlbumSaveTracks,
-}
-
-impl Services {
-    #[allow(dead_code)]
-    fn as_str(&self) -> &'static str {
-        match self {
-            Services::Dig => "dig",
-            Services::Dug => "dug",
-            Services::Catalog => "catalog",
-            Services::AlbumSaveTracks => "albumSaveTracks",
-        }
-    }
+    #[strum(serialize = "dig")]
+    dig,
+    #[strum(serialize = "dug")]
+    dug,
+    #[strum(serialize = "catalog")]
+    catalog,
+    #[strum(serialize = "albumSaveTracks")]
+    albumSaveTracks,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
