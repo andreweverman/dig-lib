@@ -307,6 +307,7 @@ version = "0.1.0"
 dependencies = [
  "mongodb",
  "serde",
+ "serde_json",
  "strum",
  "strum_macros",
 ]

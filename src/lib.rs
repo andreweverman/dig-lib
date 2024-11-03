@@ -2,6 +2,7 @@ use std::{collections::HashMap, error::Error};
 
 use mongodb::bson::DateTime;
 use serde::{Deserialize, Serialize};
+use serde_json::ser;
 use strum_macros::{Display, EnumString};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -42,27 +43,11 @@ pub enum Services {
     #[strum(serialize = "dig")]
     Dig,
     #[strum(serialize = "dug")]
-    Dugs,
+    Dug,
     #[strum(serialize = "catalog")]
-    Catalogs,
+    Catalog,
     #[strum(serialize = "albumSaveTracks")]
     AlbumSaveTracks,
-}
-
-pub trait Service: Serialize + for<'de> Deserialize<'de> + Clone {}
-
-impl Service for Dig {}
-impl Service for Dug {}
-impl Service for Catalog {}
-impl Service for AlbumSaveTracks {}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-#[serde(tag = "type", content = "data")]
-pub enum ServiceEnum {
-    Dig(Dig),
-    Dug(Dug),
-    Catalog(Catalog),
-    AlbumSaveTracks(AlbumSaveTracks),
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -76,9 +61,25 @@ pub struct User {
     pub photo: Option<String>,
     pub access_token: Option<String>,
     pub refresh_token: Option<String>,
-    pub services: Option<HashMap<Services, ServiceEnum>>,
+    pub services: Option<HashMap<Services, serde_json::Value>>,
 }
 
+impl User {
+    pub fn get_service<T>(&self, service: Services) -> Result<T, Box<dyn Error>>
+    where
+        T: serde::de::DeserializeOwned,
+    {
+        let service = self
+            .services
+            .as_ref()
+            .ok_or("No services found")?
+            .get(&service)
+            .ok_or("Service not found")?;
+        let service: T = serde_json::from_value(service.clone())?;
+        Ok(service)
+    }
+
+}
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
@@ -107,3 +108,4 @@ impl RedisMessage {
         }
     }
 }
+
