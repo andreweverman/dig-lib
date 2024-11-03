@@ -2,7 +2,6 @@ use std::{collections::HashMap, error::Error};
 
 use mongodb::bson::DateTime;
 use serde::{Deserialize, Serialize};
-use serde_json::ser;
 use strum_macros::{Display, EnumString};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -41,7 +40,7 @@ pub struct AlbumSaveTracks {
 #[derive(EnumString, Debug, Display, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 pub enum Services {
     #[strum(serialize = "dig")]
-    Dig,
+    Diggy,
     #[strum(serialize = "dug")]
     Dug,
     #[strum(serialize = "catalog")]
