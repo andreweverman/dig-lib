@@ -40,13 +40,13 @@ pub struct AlbumSaveTracks {
 #[derive(EnumString, Debug, Display, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 pub enum Services {
     #[strum(serialize = "dig")]
-    dig,
+    Dig,
     #[strum(serialize = "dug")]
-    dug,
+    Dug,
     #[strum(serialize = "catalog")]
-    catalog,
+    Catalog,
     #[strum(serialize = "albumSaveTracks")]
-    albumSaveTracks,
+    AlbumSaveTracks,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -60,11 +60,11 @@ pub struct User {
     pub photo: Option<String>,
     pub access_token: Option<String>,
     pub refresh_token: Option<String>,
-    pub services: Option<HashMap<Services, serde_json::Value>>,
+    pub services: Option<HashMap<String, serde_json::Value>>,
 }
 
 impl User {
-    pub fn get_service<T>(&self, service: Services) -> Result<T, Box<dyn Error>>
+    pub fn get_service<T>(&self, service: String) -> Result<T, Box<dyn Error>>
     where
         T: serde::de::DeserializeOwned,
     {
