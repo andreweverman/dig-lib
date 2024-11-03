@@ -95,11 +95,11 @@ pub struct RedisMessage {
     pub id: String,
     pub timestamp: DateTime,
     pub user: RedisUser,
-    pub service: Services,
+    pub service: serde_json::Value,
 }
 
 impl RedisMessage {
-    pub fn new(id: String, timestamp: DateTime, user: RedisUser, service: Services) -> Self {
+    pub fn new(id: String, timestamp: DateTime, user: RedisUser, service: serde_json::Value) -> Self {
         Self {
             id,
             timestamp,
