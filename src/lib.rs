@@ -90,6 +90,18 @@ pub struct RedisUser {
     pub refresh_token: String,
 }
 
+// make a from method for User to RedisUser
+impl From<User> for RedisUser {
+    fn from(user: User) -> Self {
+        Self {
+            id: user.id.unwrap_or_default(),
+            user_id: user.user_id.unwrap_or_default(),
+            access_token: user.access_token.unwrap_or_default(),
+            refresh_token: user.refresh_token.unwrap_or_default(),
+        }
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct RedisMessage {
     pub id: String,
