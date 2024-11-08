@@ -1,14 +1,15 @@
 use std::{collections::HashMap, error::Error};
 
-use mongodb::bson::DateTime;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use chrono::{DateTime, Utc};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Dig {
     pub playlist_id: String,
-    pub last_run: DateTime,
+    #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
+    pub last_run: DateTime<Utc>,
     pub running: bool,
     pub days_to_keep: u16,
     pub min_songs: u16,
@@ -19,7 +20,8 @@ pub struct Dig {
 #[serde(rename_all = "camelCase")]
 pub struct Dug {
     pub playlist_id: String,
-    pub last_run: DateTime,
+    #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
+    pub last_run: DateTime<Utc>,
     pub running: bool,
 }
 
@@ -28,13 +30,15 @@ pub struct Dug {
 pub struct Catalog {
     pub catalog_playlist_id: String,
     pub discover_weekly_playlist_id: String,
-    pub last_run: DateTime,
+    #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
+    pub last_run: DateTime<Utc>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct AlbumSaveTracks {
-    pub last_run: DateTime,
+    #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
+    pub last_run: DateTime<Utc>,
 }
 
 #[derive(EnumString, Debug, Display, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
@@ -104,13 +108,14 @@ impl From<User> for RedisUser {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct RedisMessage {
     pub id: String,
-    pub timestamp: DateTime,
+    #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
+    pub timestamp: DateTime<Utc>,
     pub user: RedisUser,
     pub service: serde_json::Value,
 }
 
 impl RedisMessage {
-    pub fn new(id: String, timestamp: DateTime, user: RedisUser, service: serde_json::Value) -> Self {
+    pub fn new(id: String, timestamp: DateTime<Utc>, user: RedisUser, service: serde_json::Value) -> Self {
         Self {
             id,
             timestamp,
