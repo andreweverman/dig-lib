@@ -7,6 +7,7 @@ use chrono::{DateTime, Utc};
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Dig {
+    pub id: String, 
     pub playlist_id: String,
     #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
     pub last_run: DateTime<Utc>,
@@ -19,6 +20,7 @@ pub struct Dig {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Dug {
+    pub id: String, 
     pub playlist_id: String,
     #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
     pub last_run: DateTime<Utc>,
@@ -28,6 +30,7 @@ pub struct Dug {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Catalog {
+    pub id: String, 
     pub catalog_playlist_id: String,
     pub discover_weekly_playlist_id: String,
     #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
@@ -37,6 +40,7 @@ pub struct Catalog {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct AlbumSaveTracks {
+    pub id: String, 
     #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
     pub last_run: DateTime<Utc>,
 }
