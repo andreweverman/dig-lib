@@ -77,7 +77,7 @@ impl User {
             .as_ref()
             .ok_or("No services found")?
             .iter()
-            .find(|s| s["service"] == service.to_string())
+            .find(|s| s["type"] == service.to_string())
             .ok_or("Service not found")?;
         let service: T = serde_json::from_value(service.clone())?;
         Ok(service)
