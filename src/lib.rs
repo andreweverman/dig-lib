@@ -64,11 +64,11 @@ pub struct User {
     pub photo: Option<String>,
     pub access_token: Option<String>,
     pub refresh_token: Option<String>,
-    pub services: Option<HashMap<String, serde_json::Value>>,
+    pub services: Option<Vec<serde_json::Value>>,
 }
 
 impl User {
-    pub fn get_service<T>(&self, service: String) -> Result<T, Box<dyn Error>>
+    pub fn get_service<T>(&self, service: Services) -> Result<T, Box<dyn Error>>
     where
         T: serde::de::DeserializeOwned,
     {
@@ -76,7 +76,8 @@ impl User {
             .services
             .as_ref()
             .ok_or("No services found")?
-            .get(&service)
+            .iter()
+            .find(|s| s["service"] == service.to_string())
             .ok_or("Service not found")?;
         let service: T = serde_json::from_value(service.clone())?;
         Ok(service)
